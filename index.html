@@ -1,0 +1,54 @@
+<html>
+    <head>
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+        <script type="text/javascript" src="js/jquery.event.drag-2.2.js"></script>
+        <script type="text/javascript" src="js/heartbeat.js"></script>
+        <script type="text/javascript" src="js/slide_view.js"></script>
+        <script type="text/javascript" src="js/progress_bar.js"></script>
+        <link href="css/progress_bar.css" rel="stylesheet" type="text/css" />
+    </head>
+<body>
+    <div style="width: 400px;">
+        <div id="animation">
+          <img src="" />
+        </div>
+        <div id="scroll" style="background-color: yellow; position: relative; width: 100%; border: 1px solid black;">
+            <div id="bar" style="background-color: red; width:20px; position: relative;">
+                <div class="handle" style="width:20px; background-color:white; position: absolute; right:0; top:0;">&nbsp;</div>
+            </div>
+        </div>
+        <button id="animate">Animate</button>
+        <button id="stop">Stop</button>
+    </div>
+    <script type="text/javascript">
+    var fileset = [];
+    (function() {
+      function pad(num, size) {
+        var s = num+"";
+        while (s.length < size) s = "0" + s;
+        return s;
+      }
+
+      for (var i = 1; i <= 24; i++)
+      {
+        fileset.push("sequence/" + pad(i, 2) + ".jpg");
+      }
+    })();
+    
+    anim = mdmAnimator($('#animation'));
+    anim.loadImages(fileset);
+    scroll = mdmScroll($('#scroll'), anim.getMax());
+    heart = animationHeartBeat(anim.getMax());
+    
+    $('#animate').click(function()
+    {
+        $(document).trigger('animation.start');
+    });
+
+    $('#stop').click(function()
+    {
+        $(document).trigger('animation.stop');
+    });
+    </script>
+</body>
+</html>
