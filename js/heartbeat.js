@@ -34,10 +34,14 @@
             current = 0;
         });
 
+        $(document).bind('animation.beat', function(event, animation)
+        {
+            current = animation.current + 1;
+        });
+
         beat = function ()
         {
             $(document).trigger('animation.beat', [{'current': current, 'max': max}]);
-            current++;
 
             if (current > max)
             {
