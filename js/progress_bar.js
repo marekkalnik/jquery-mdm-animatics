@@ -5,7 +5,7 @@
         var bar = container.children('#bar');
 
         var last = 0;
-        var max = 0;
+        var max = steps;
 
         methods = {
             update: function(event, data)
