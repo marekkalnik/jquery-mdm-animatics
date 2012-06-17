@@ -1,7 +1,7 @@
 (function($, document, window) {
-    "use strict"
+    "use strict";
 
-    window.animationHeartBeat = function (steps)
+    $.MDMAnimationHeartbeat = function (steps)
     {
         var max = steps;
         var delay = 70;

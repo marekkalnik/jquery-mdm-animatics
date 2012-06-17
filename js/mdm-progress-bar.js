@@ -1,7 +1,10 @@
 (function($, document, window) {
-    window.mdmScroll = function (target, steps)
+    "use strict";
+
+    $.fn.MDMProgressBar = function (steps)
     {
-        var container = target;
+        var container = this;
+        var methods;
         var bar = container.children('#bar');
 
         var last = 0;

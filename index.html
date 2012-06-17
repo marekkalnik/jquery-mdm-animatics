@@ -2,13 +2,13 @@
     <head>
         <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
         <script type="text/javascript" src="js/jquery.event.drag-2.2.js"></script>
-        <script type="text/javascript" src="js/heartbeat.js"></script>
-        <script type="text/javascript" src="js/slide_view.js"></script>
-        <script type="text/javascript" src="js/progress_bar.js"></script>
+        <script type="text/javascript" src="js/mdm-animation-heartbeat.js"></script>
+        <script type="text/javascript" src="js/mdm-image-viewport.js"></script>
+        <script type="text/javascript" src="js/mdm-progress-bar.js"></script>
         <link href="css/progress_bar.css" rel="stylesheet" type="text/css" />
     </head>
 <body>
-    <div style="width: 400px;">
+    <div class="container">
         <div id="animation">
           <img src="" />
         </div>
@@ -35,10 +35,12 @@
       }
     })();
     
-    anim = mdmAnimator($('#animation'));
+    //anim = $('#animation').MDMImageViewport({width: 200, height:400});
+    anim = $('#animation').MDMImageViewport();
     anim.loadImages(fileset);
-    scroll = mdmScroll($('#scroll'), anim.getMax());
-    heart = animationHeartBeat(anim.getMax());
+    scroll = $('#scroll').MDMProgressBar(anim.getMax());
+    $('#scroll').width($('#animation').width());
+    heart = $.MDMAnimationHeartbeat(anim.getMax());
     
     $('#animate').click(function()
     {
