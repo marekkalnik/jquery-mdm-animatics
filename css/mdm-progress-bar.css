@@ -1,0 +1,27 @@
+.mdm-progress-bar,
+.mdm-progress-bar div {
+    height: 12px;
+}
+
+.mdm-progress-bar {
+    background-color: yellow;
+    position: relative;
+    width: 100%;
+    border: 1px solid black;
+}
+
+.mdm-progress-bar .bar
+{
+    background-color: red;
+    width: 0;
+    position: relative;
+}
+
+.mdm-progress-bar .manipulator {
+    width: 20px;
+    background-color: white;
+    position: absolute;
+    right: -10px;
+    top: 0;
+    z-index: 1;
+}

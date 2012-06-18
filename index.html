@@ -1,56 +1,55 @@
+<!DOCTYPE html>
 <html>
-    <head>
-        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-        <script type="text/javascript" src="js/jquery.event.drag-2.2.js"></script>
-        <script type="text/javascript" src="js/mdm-animation-heartbeat.js"></script>
-        <script type="text/javascript" src="js/mdm-image-viewport.js"></script>
-        <script type="text/javascript" src="js/mdm-progress-bar.js"></script>
-        <link href="css/progress_bar.css" rel="stylesheet" type="text/css" />
-    </head>
+<head>
+  <link href="css/example.css" rel="stylesheet" type="text/css" />
+  <link href="css/mdm-progress-bar.css" rel="stylesheet" type="text/css" />
+  <link href="css/mdm-animation-launcher.css" rel="stylesheet" type="text/css" />
+
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+  <script type="text/javascript" src="js/jquery.event.drag-2.2.js"></script>
+  <script type="text/javascript" src="js/mdm-animation-heartbeat.js"></script>
+  <script type="text/javascript" src="js/mdm-image-viewport.js"></script>
+  <script type="text/javascript" src="js/mdm-progress-bar.js"></script>
+  <script type="text/javascript" src="js/mdm-animation-launcher.js"></script>
+</head>
 <body>
-    <div class="container">
-        <div id="animation">
-          <img src="" />
-        </div>
-        <div id="scroll" style="background-color: yellow; position: relative; width: 100%; border: 1px solid black;">
-            <div id="bar" style="background-color: red; width:20px; position: relative;">
-                <div class="handle" style="width:20px; background-color:white; position: absolute; right:0; top:0;">&nbsp;</div>
-            </div>
-        </div>
-        <button id="animate">Animate</button>
-        <button id="stop">Stop</button>
+<div id="container">
+  <div id="animation">
+    <img src="" />
+    <button id="animate">Animate</button>
+    <div class="mdm-progress-bar">
+      <div class="bar">
+        <div class="manipulator">&nbsp;</div>
+      </div>
     </div>
-    <script type="text/javascript">
-    var fileset = [];
-    (function() {
-      function pad(num, size) {
-        var s = num+"";
-        while (s.length < size) s = "0" + s;
-        return s;
-      }
-
-      for (var i = 1; i <= 24; i++)
+  </div>
+</div>
+<script type="text/javascript">
+  var fileset = [];
+  (function ()
+  {
+    function pad(num, size)
+    {
+      var s = num + "";
+      while (s.length < size)
       {
-        fileset.push("sequence/" + pad(i, 2) + ".jpg");
+        s = "0" + s;
       }
-    })();
-    
-    //anim = $('#animation').MDMImageViewport({width: 200, height:400});
-    anim = $('#animation').MDMImageViewport();
-    anim.loadImages(fileset);
-    scroll = $('#scroll').MDMProgressBar(anim.getMax());
-    $('#scroll').width($('#animation').width());
-    heart = $.MDMAnimationHeartbeat(anim.getMax());
-    
-    $('#animate').click(function()
-    {
-        $(document).trigger('animation.start');
-    });
+      return s;
+    }
 
-    $('#stop').click(function()
+    for (var i = 1; i <= 24; i++)
     {
-        $(document).trigger('animation.stop');
-    });
-    </script>
+      fileset.push("sequence/" + pad(i, 2) + ".jpg");
+    }
+  })();
+
+  //anim = $('#animation').MDMImageViewport({width: 200, height:400});
+  anim = $('#animation').MDMImageViewport();
+  anim.loadImages(fileset);
+  scroll = $('.mdm-progress-bar').MDMProgressBar(anim.getMax());
+  heart = $.MDMAnimationHeartbeat(anim.getMax());
+  $('#animate').MDMAnimationLauncher();
+</script>
 </body>
 </html>

@@ -1,13 +1,13 @@
-(function($, document, window) {
+;(function($, document) {
     "use strict";
 
     $.fn.MDMImageViewport = function(config)
     {
         var container = $(this);
-        var config = jQuery.extend({}, defaults, config);
-
         var defaults = {
         };
+
+        var config = jQuery.extend({}, defaults, config);
 
         var props = {
             loaded: false,
@@ -22,6 +22,8 @@
         var methods = {
             construct: function ()
             {
+                container.addClass('mdm-image-viewport');
+
                 if (config.width)
                 {
                     methods.setWidth(config.width);
@@ -34,7 +36,6 @@
             },
             loadImages: function (images)
             {
-                var width, height;
                 var image = new Image(),
                     i, len;
 
@@ -91,7 +92,7 @@
             }
         };
 
-        $(document).bind('animation.beat', methods.eventChangeImage);
+        $(document).bind('mdm-animation.beat', methods.eventChangeImage);
         methods.construct();
 
         return {
@@ -99,4 +100,4 @@
             getMax: methods.getMax
         };
     };
-})(jQuery, document, window);
+})(jQuery, document);

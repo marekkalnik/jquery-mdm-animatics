@@ -1,61 +1,71 @@
-(function($, document, window) {
+;(function($, document) {
     "use strict";
 
     $.fn.MDMProgressBar = function (steps)
     {
         var container = this;
         var methods;
-        var bar = container.children('#bar');
+        var bar = container.children('.bar');
+        var queueInterval = null;
 
         var last = 0;
-        var max = steps;
+        var max = steps - 1;
 
         methods = {
             update: function(event, data)
             {
                 var width;
 
+                last = data.current;
+
                 if (bar.is(data.triggerer))
                 {
-                    return;
+
+                    return true;
                 }
 
                 width = container.width();
 
                 max = data.max;
-                last = data.current + 1;
 
-                bar.width(last/max * width);
+                bar.width(Math.min(width, last/max * width));
 
                 console.log(bar.width());
             }
         };
 
-        $(document).bind('animation.beat', methods.update);
+        $(document).bind('mdm-animation.beat', methods.update);
 
-        bar.drag("start",function(event, drag){
+        bar.drag("start", function(event, drag){
             drag.width = $(this).width();
-        })
-            .drag(function(event, drag){
-                var width = Math.max(20, drag.width + drag.deltaX);
-                var current;
+        }).drag(function(event, drag){
+            var width = Math.max(0, drag.width + drag.deltaX);
+            var current;
 
-                if (width <= container.width())
+            if (width <= container.width())
+            {
+                $(this).width(width);
+            }
+            else
+            {
+                $(this).width(container.width());
+            }
+
+            current = Math.max(0, Math.round(($(this).width() / container.width()) * max));
+
+            if (last !== current)
+            {
+                if (queueInterval !== null)
                 {
-                    $(this).width(width);
-                }
-                else
-                {
-                    $(this).width(container.width());
+                    clearInterval(queueInterval);
+                    queueInterval = null;
                 }
 
-                current = Math.round(($(this).width() / container.width()) * max);
-                console.log('current:' + current);
-
-                if (last !== current)
-                {
-                    $(document).trigger('animation.beat', [{current: current - 1, max: max, triggerer: $(this)}]);
-                }
-            }, { handle:'.handle' });
+                queueInterval = setTimeout(function() {
+                    console.log('beat; current:' + current);
+                    $(document).trigger('mdm-animation.beat', [{current: current, max: max, triggerer: $(this)}]);
+                }, 6);
+            }
+        }, { handle:'.manipulator' });
     };
-})(jQuery, document, window);
+})(jQuery, document);
