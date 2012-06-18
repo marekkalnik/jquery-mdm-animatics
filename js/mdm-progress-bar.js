@@ -1,71 +1,113 @@
-;(function($, document) {
+;(function ($, document)
+{
     "use strict";
 
     $.fn.MDMProgressBar = function (steps)
     {
-        var container = this;
-        var methods;
-        var bar = container.children('.bar');
-        var queueInterval = null;
+        return this.each(function ()
+        {
+            var container = $(this),
+                TEMPLATE = '<div class="total"><div class="progress"><div class="manipulator">&nbsp;</div></div></div>',
+                methods,
+                progressBar,
+                manipulator,
+                total,
+                queueInterval = null,
+                last = 0,
+                max = steps - 1;
 
-        var last = 0;
-        var max = steps - 1;
-
-        methods = {
-            update: function(event, data)
-            {
-                var width;
-
-                last = data.current;
-
-                if (bar.is(data.triggerer))
+            methods = {
+                construct:function ()
                 {
+                    container.addClass('mdm-progress-bar');
+                    container.html(TEMPLATE);
+                    progressBar = container.find('.progress');
+                    manipulator = container.find('.manipulator');
+                    total = container.find('.total');
 
-                    return true;
-                }
+                    $(document).bind('mdm-animation.beat', methods.update);
 
-                width = container.width();
+                    manipulator.drag("start", methods.startDrag).drag(methods.changeOnDrag, { handle:'.manipulator' });
 
-                max = data.max;
-
-                bar.width(Math.min(width, last/max * width));
-
-                console.log(bar.width());
-            }
-        };
-
-        $(document).bind('mdm-animation.beat', methods.update);
-
-        bar.drag("start", function(event, drag){
-            drag.width = $(this).width();
-        }).drag(function(event, drag){
-            var width = Math.max(0, drag.width + drag.deltaX);
-            var current;
-
-            if (width <= container.width())
-            {
-                $(this).width(width);
-            }
-            else
-            {
-                $(this).width(container.width());
-            }
-
-            current = Math.max(0, Math.round(($(this).width() / container.width()) * max));
-
-            if (last !== current)
-            {
-                if (queueInterval !== null)
+                    total.click(methods.changeOnClick);
+                },
+                startDrag:function (event, drag)
                 {
-                    clearInterval(queueInterval);
-                    queueInterval = null;
-                }
+                    drag.width = progressBar.width();
+                },
+                changeOnDrag:function (event, drag)
+                {
+                    var width = Math.max(0, drag.width + drag.deltaX);
+                    var current;
 
-                queueInterval = setTimeout(function() {
-                    console.log('beat; current:' + current);
-                    $(document).trigger('mdm-animation.beat', [{current: current, max: max, triggerer: $(this)}]);
-                }, 6);
-            }
-        }, { handle:'.manipulator' });
+                    if (width <= container.width())
+                    {
+                        progressBar.width(width);
+                    }
+                    else
+                    {
+                        progressBar.width(container.width());
+                    }
+
+                    current = methods.calculateSlide(progressBar.width());
+
+                    if (last !== current)
+                    {
+                        methods.lanuchChangeEvent(current, $(event.currentTarget));
+                    }
+                },
+                changeOnClick:function (event)
+                {
+                    var slide;
+
+                    if ($(event.target).is(manipulator))
+                    {
+                        return false;
+                    }
+
+                    slide = methods.calculateSlide(event.offsetX);
+                    methods.lanuchChangeEvent(slide, $(event.currentTarget));
+                },
+                lanuchChangeEvent:function (current, triggerer)
+                {
+                    if (queueInterval !== null)
+                    {
+                        clearInterval(queueInterval);
+                        queueInterval = null;
+                    }
+
+                    queueInterval = setTimeout(function ()
+                    {
+                        $(document).trigger('mdm-animation.beat', [
+                            {current:current, max:max, triggerer:triggerer}
+                        ]);
+                    }, 6);
+                },
+                calculateSlide:function (position)
+                {
+                    return Math.max(0, Math.round((position / container.width()) * max));
+                },
+                update:function (event, data)
+                {
+                    var width;
+
+                    last = data.current;
+
+                    if (manipulator.is(data.triggerer))
+                    {
+
+                        return true;
+                    }
+
+                    width = container.width();
+
+                    max = data.max;
+
+                    progressBar.width(Math.min(width, last / max * width));
+                }
+            };
+
+            methods.construct();
+        });
     };
 })(jQuery, document);

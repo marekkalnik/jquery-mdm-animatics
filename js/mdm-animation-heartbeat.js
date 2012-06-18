@@ -1,24 +1,25 @@
-;(function($, document) {
+;(function ($, document)
+{
     "use strict";
 
-    $.MDMAnimationHeartbeat = function (steps)
+    $.MDMAnimationHeartbeat = function (steps, speed)
     {
-        var max = steps;
-        var delay = 70;
-        var current = 0;
-        var interval;
-        var beat;
+        var max = steps,
+            current = 0,
+            delay,
+            interval,
+            beat;
 
-        $(document).bind('mdm-animation.stop', function()
+        // set default speed if none is passed as parameter
+        delay = typeof speed !== 'undefined' ? speed : 70;
+
+        $(document).bind('mdm-animation.stop', function ()
         {
-            console.log('mdm-animation.stop event caught');
             clearInterval(interval);
         });
 
-        $(document).bind('mdm-animation.start', function()
+        $(document).bind('mdm-animation.start', function ()
         {
-            console.log('mdm-animation.start event caught');
-
             if (current > max)
             {
                 $(document).trigger('mdm-animation.reset');
@@ -27,26 +28,26 @@
             interval = setInterval(beat, delay);
         });
 
-        $(document).bind('mdm-animation.reset', function()
+        $(document).bind('mdm-animation.reset', function ()
         {
-            console.log('mdm-animation.reset event caught');
-
             current = 0;
         });
 
-        $(document).bind('mdm-animation.beat', function(event, animation)
+        $(document).bind('mdm-animation.beat', function (event, animation)
         {
             current = animation.current + 1;
         });
 
         beat = function ()
         {
-            $(document).trigger('mdm-animation.beat', [{'current': current, 'max': max}]);
+            $(document).trigger('mdm-animation.beat', [
+                {'current':current, 'max':max}
+            ]);
 
             if (current > max)
             {
                 $(document).trigger('mdm-animation.stop');
             }
-        }
-    }
+        };
+    };
 })(jQuery, document);
