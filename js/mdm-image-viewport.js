@@ -1,10 +1,15 @@
+/*!
+ * @license MIT
+ * @author Marek Kalnik
+ * @copyright (c) Maisons du Monde
+ */
 ;(function ($, document)
 {
     "use strict";
 
     $.fn.MDMImageViewport = function (images, settings)
     {
-        if (!$.isArray(images) || images.length == 0)
+        if (!$.isArray(images) || images.length === 0)
         {
             throw "MDMImageViewport: You need to pass an non-empty array of image paths to viewport on instantiation";
         }

@@ -1,3 +1,8 @@
+/*!
+ * @license MIT
+ * @author Marek Kalnik
+ * @copyright (c) Maisons du Monde
+ */
 ;(function ($, document)
 {
     "use strict";
