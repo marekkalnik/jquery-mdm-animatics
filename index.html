@@ -38,7 +38,7 @@
   })();
 
   anim = $('#animation').MDMImageViewport(fileset);
-  scroll = $('#progress-bar').MDMProgressBar(anim.data('maxImages'));
+  $('#progress-bar').MDMProgressBar(anim.data('maxImages'));
   $.MDMAnimationHeartbeat(anim.data('maxImages'));
   $('#animation img').MDMAnimationLauncher();
 </script>
