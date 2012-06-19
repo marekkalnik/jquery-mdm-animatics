@@ -18,6 +18,7 @@
         {
             var container = $(this),
                 config = $.extend({}, settings),
+                cache,
 
                 props = {
                     loaded:false,
@@ -31,6 +32,9 @@
                     {
                         $(document).bind('mdm-animation.beat', methods.eventChangeImage);
                         container.addClass('mdm-image-viewport');
+                        container.append('<div class="cache"></div>');
+                        cache = container.children('.cache');
+                        cache.hide();
 
                         if (config.width)
                         {
@@ -65,10 +69,13 @@
                                 methods.setHeight(this.height);
                             }
                         };
+                        //cache.append(image);
 
                         for (i = 1, len = images.length; i < len; i++)
                         {
+                            image = new Image();
                             image.src = images[i];
+                         //   cache.append(image);
                         }
 
                         props.nbImages = len;
