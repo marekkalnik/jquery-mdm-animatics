@@ -40,7 +40,6 @@
 
         $(document).bind('mdm-animation.beat', function (event, animation)
         {
-            console.log('mdm-animation.beat: img ' + animation.current + ', max ' + max);
             current = animation.current + 1;
         });
 
