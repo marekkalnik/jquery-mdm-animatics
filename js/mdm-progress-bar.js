@@ -19,7 +19,8 @@
                 total,
                 queueInterval = null,
                 last = 0,
-                max = steps - 1;
+                max = steps - 1,
+                progressBarMaxSize;
 
             methods = {
                 construct:function ()
@@ -29,20 +30,17 @@
                     progressBar = container.find('.progress');
                     manipulator = container.find('.manipulator');
                     total = container.find('.total');
+                    progressBarMaxSize = container.width() - manipulator.width();
 
                     $(document).bind('mdm-animation.beat', methods.update);
 
-                    manipulator.drag("start", methods.startDrag).drag(methods.changeOnDrag, { handle:'.manipulator' });
+                    manipulator.draggable({containment: ".total", drag: methods.changeOnDrag, axis: "x"});
 
                     total.click(methods.changeOnClick);
                 },
-                startDrag:function (event, drag)
-                {
-                    drag.width = progressBar.width();
-                },
                 changeOnDrag:function (event, drag)
                 {
-                    var width = Math.max(0, drag.width + drag.deltaX);
+                    var width = Math.max(0, drag.position.left);
                     var current;
 
                     if (width <= container.width())
@@ -58,7 +56,7 @@
 
                     if (last !== current)
                     {
-                        methods.lanuchChangeEvent(current, $(event.currentTarget));
+                        methods.launchChangeEvent(current, $(event.currentTarget));
                     }
                 },
                 changeOnClick:function (event)
@@ -71,14 +69,13 @@
                     }
 
                     slide = methods.calculateSlide(event.offsetX);
-                    methods.lanuchChangeEvent(slide, $(event.currentTarget));
+                    methods.launchChangeEvent(slide, $(event.currentTarget));
                 },
-                lanuchChangeEvent:function (current, triggerer)
+                launchChangeEvent:function (current, triggerer)
                 {
                     if (queueInterval !== null)
                     {
                         clearInterval(queueInterval);
-                        queueInterval = null;
                     }
 
                     queueInterval = setTimeout(function ()
@@ -90,7 +87,7 @@
                 },
                 calculateSlide:function (position)
                 {
-                    return Math.max(0, Math.round((position / container.width()) * max));
+                    return Math.max(0, Math.round((position / progressBarMaxSize) * max));
                 },
                 update:function (event, data)
                 {
@@ -104,11 +101,11 @@
                         return true;
                     }
 
-                    width = container.width();
-
                     max = data.max;
+                    width = Math.min(progressBarMaxSize, last / max * progressBarMaxSize);
 
-                    progressBar.width(Math.min(width, last / max * width));
+                    progressBar.width(width);
+                    manipulator.css({left: width});
                 }
             };
 

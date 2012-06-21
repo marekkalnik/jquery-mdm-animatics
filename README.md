@@ -1,15 +1,15 @@
 jQuery.MDMAnimatics Plugin
 ==========================
 
-This is a set of jQuery plugins allowing to create a full animatics view. It usese an event-oriented architecture to provide scalability and extensibility.
+This is a set of jQuery plugins allowing to create a full animatics view. It uses an event-oriented architecture to provide scalability and extensibility.
 
 The plugin and all its components are published under MIT License. See the included LICENSE file for detailed information.
 
 Dependencies
 ------------
 
- * jQuery 1.7
- * jquery.event.drag plugin [http://threedubmedia.com/code/event/drag] (included)
+ * jQuery 1.4+ (tested with 1.4.2, 1.6.1 and 1.7.1)
+ * jQuery UI 1.8 (tested with 1.8.5 and 1.8.17)
 
 Examples
 --------
