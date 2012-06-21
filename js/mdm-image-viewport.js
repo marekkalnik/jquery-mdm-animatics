@@ -69,11 +69,13 @@
                                 methods.setHeight('auto');
                             }
                         };
+                        cache.append($(document.createElement('img')).attr({src: images[0]}));
 
                         for (i = 1, len = images.length; i < len; i++)
                         {
                             image = new Image();
                             image.src = images[i];
+                            cache.append($(document.createElement('img')).attr({src: images[i]}));
                         }
 
                         props.nbImages = len;
