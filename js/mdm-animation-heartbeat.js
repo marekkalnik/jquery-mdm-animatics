@@ -9,7 +9,7 @@
 
     $.MDMAnimationHeartbeat = function (steps, speed)
     {
-        var max = steps,
+        var max = steps - 1,
             current = 0,
             delay,
             interval,
@@ -40,6 +40,7 @@
 
         $(document).bind('mdm-animation.beat', function (event, animation)
         {
+            console.log('mdm-animation.beat: img ' + animation.current + ', max ' + max);
             current = animation.current + 1;
         });
 
