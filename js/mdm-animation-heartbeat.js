@@ -16,7 +16,7 @@
             beat;
 
         // set default speed if none is passed as parameter
-        delay = typeof speed !== 'undefined' ? speed : 70;
+        delay = typeof speed !== 'undefined' ? speed : 40;
 
         $(document).bind('mdm-animation.stop', function ()
         {
