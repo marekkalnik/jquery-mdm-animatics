@@ -62,20 +62,18 @@
                         {
                             if (typeof config.width === 'undefined')
                             {
-                                methods.setWidth(this.width);
+                                methods.setWidth('auto');
                             }
                             if (typeof config.height === 'undefined')
                             {
-                                methods.setHeight(this.height);
+                                methods.setHeight('auto');
                             }
                         };
-                        //cache.append(image);
 
                         for (i = 1, len = images.length; i < len; i++)
                         {
                             image = new Image();
                             image.src = images[i];
-                         //   cache.append(image);
                         }
 
                         props.nbImages = len;
