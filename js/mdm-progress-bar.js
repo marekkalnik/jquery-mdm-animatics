@@ -20,7 +20,7 @@
                 queueInterval = null,
                 last = 0,
                 max = steps - 1,
-                progressBarMaxSize;
+                progressBarMaxSize = 0;
 
             methods = {
                 construct:function ()
@@ -30,7 +30,6 @@
                     progressBar = container.find('.progress');
                     manipulator = container.find('.manipulator');
                     total = container.find('.total');
-                    progressBarMaxSize = container.width() - manipulator.width();
 
                     $(document).bind('mdm-animation.beat', methods.update);
 
@@ -68,6 +67,8 @@
                         return false;
                     }
 
+                    methods.changeManipulatorPosition(event.offsetX);
+
                     slide = methods.calculateSlide(event.offsetX);
                     methods.launchChangeEvent(slide, $(event.currentTarget));
                 },
@@ -87,11 +88,26 @@
                 },
                 calculateSlide:function (position)
                 {
+                    if (progressBarMaxSize === 0)
+                    {
+                        progressBarMaxSize = container.width() - manipulator.width();
+                    }
+
                     return Math.max(0, Math.round((position / progressBarMaxSize) * max));
+                },
+                changeManipulatorPosition: function(position)
+                {
+                    manipulator.css({left: position});
+                    progressBar.width(position);
                 },
                 update:function (event, data)
                 {
                     var width;
+
+                    if (progressBarMaxSize === 0)
+                    {
+                        progressBarMaxSize = container.width() - manipulator.width();
+                    }
 
                     last = data.current;
 
@@ -104,8 +120,7 @@
                     max = data.max;
                     width = Math.min(progressBarMaxSize, last / max * progressBarMaxSize);
 
-                    progressBar.width(width);
-                    manipulator.css({left: width});
+                    methods.changeManipulatorPosition(width);
                 }
             };
 
