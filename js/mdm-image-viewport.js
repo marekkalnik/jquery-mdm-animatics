@@ -24,7 +24,8 @@
                     loaded:false,
                     images:[],
                     current:0,
-                    nbImages:0
+                    nbImages:0,
+                    loadedImages:0
                 },
 
                 methods = {
@@ -68,6 +69,8 @@
                             {
                                 methods.setHeight('auto');
                             }
+
+                            methods.imageLoaded();
                         };
                         cache.append($(document.createElement('img')).attr({src: images[0]}));
 
@@ -75,12 +78,21 @@
                         {
                             image = new Image();
                             image.src = images[i];
+                            image.onload = methods.imageLoaded;
                             cache.append($(document.createElement('img')).attr({src: images[i]}));
                         }
 
                         props.nbImages = len;
-                        props.loaded = true;
-                        methods.setContainerImage(0);
+                    },
+                    imageLoaded: function()
+                    {
+                        props.loadedImages++;
+                        if (props.loadedImages === props.nbImages)
+                        {
+                            props.loaded = true;
+                            $(document).trigger('mdm-image-viewport.images-loaded');
+                            methods.setContainerImage(0);
+                        }
                     },
                     eventChangeImage:function (event, data)
                     {
